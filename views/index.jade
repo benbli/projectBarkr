@@ -1,0 +1,47 @@
+extends layout
+
+block content
+
+  div(class="main-wrapper", ng-controller="main")
+    header
+      h1(class="title-logo") Barkr
+      a(href="/" class="about-link") About
+    
+    div(class="map-wrapper")  
+      div(id="map")
+    
+    section(id="left-section")
+      div(class="form-wrapper")
+        br
+        h5 Set up a playdate
+        img(src="/images/bulldog.png" id="bully")
+        img(src="/images/Thought_bubble.png" id="ponderings")
+
+        form(ng-submit="createPlaydate()" id="setup-date-form")
+          label(for="form-time") Time
+          input(type="text" ng-model="newPlaydate.time", id="form-time", placeholder="ie. 1/18 5pm")
+          label(for="form-location") Location
+          input(type="text" ng-model="newPlaydate.location", id="form-location" placeholder="Tompkins Square Park")
+          input(type="submit", class="button-primary", value="bark") 
+    
+        
+      div(class="playdates-wrapper")
+        div(class="playdates-list")
+          div(class="playdate-header")
+            h5 Current playdates     
+          
+          table(class="u-full-width")
+            thead
+              tr
+                th 
+                  i(class="fa fa-map-marker")
+                  span   Location 
+                th  
+                  i(class="fa fa-clock-o") 
+            tbody(ng-repeat="playdate in playdates")
+              tr
+                td 
+                  {{ playdate.location }}
+                td 
+                  {{ playdate.time }}
+      

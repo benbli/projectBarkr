@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCAK7M02_6dQEDM3eIpp5SMLQ6QRv-doew')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js')
+    script(src='http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-resource.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-route.js')
+    script(src='/js/controllers/main.js')
+    script(src='/js/services/usersApi.js')
+    script(src='/js/app.js')
+  body(ng-app="BarkrApp")
+    block content
