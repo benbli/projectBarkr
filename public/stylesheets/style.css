@@ -19,6 +19,7 @@ a {
 
 a:hover {
   color: rgb(245, 23, 0);
+  cursor: pointer;
 }
 
 header {

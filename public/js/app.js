@@ -1,6 +1,7 @@
 console.log('app loaded');
 var app = angular.module('BarkrApp', [
-  'MainController'
+  'MainController',
+  'playdateApi'
 ]);
 
 

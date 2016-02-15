@@ -1,183 +1,105 @@
 var ctrl = angular.module('MainController', []);
 
-ctrl.controller('main', ['$scope', 'playdateApi', function ($scope, playdateApi) {
-  $scope.message = "hi";
-
-// puppies map
-  var myMap = {};
-    myMap.init = function () {
-
-      this.map;
-      this.currentLatLng;
-      this.zoom;
-      this.mapEl;
-
-      // MAP SETTINGS
-        this.zoom = 15;
-        this.mapEl = document.querySelector('#map');
-        console.log(this.map);
-
-        this.currentLatLng = new google.maps.LatLng( 40.726755, -73.981617 );
-        console.log(this.currentLatLng);
-
-        this.map = new google.maps.Map( this.mapEl, {
-          center: this.currentLatLng,
-          zoom: this.zoom,
-          styles: [
-                    {
-                        "featureType": "administrative",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                            {
-                                "color": "#444444"
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "landscape",
-                        "elementType": "all",
-                        "stylers": [
-                            {
-                                "color": "#f2f2f2"
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "poi",
-                        "elementType": "all",
-                        "stylers": [
-                            {
-                                "visibility": "off"
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "road",
-                        "elementType": "all",
-                        "stylers": [
-                            {
-                                "saturation": -100
-                            },
-                            {
-                                "lightness": 45
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "road.highway",
-                        "elementType": "all",
-                        "stylers": [
-                            {
-                                "visibility": "simplified"
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "road.arterial",
-                        "elementType": "labels.icon",
-                        "stylers": [
-                            {
-                                "visibility": "off"
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "transit",
-                        "elementType": "all",
-                        "stylers": [
-                            {
-                                "visibility": "off"
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "water",
-                        "elementType": "all",
-                        "stylers": [
-                            {
-                                "color": "#46bcec"
-                            },
-                            {
-                                "visibility": "on"
-                            }
-                        ]
-                    }
-                ]
-        });
-
-      // MAP MARKER
-        this.marker = new google.maps.Marker({
-          position: this.currentLatLng,
-          map: this.map,
-          title: 'I am marker hurrderrr',
-          icon: '/images/french.png',
-          draggable: true,
-          animation: google.maps.Animation.BOUNCE
-        });
-
-        //***********************************
-        //************ GEOCODER *************
-        //***********************************
-        var geocoder = new google.maps.Geocoder();
-        
-        function getCoordinates( address, callback ) {
-          var coordinates;
-          geocoder.geocode({address: address}, function ( results, status) {
-            coord_obj = results[0].geometry.location;
-            coordinates = [coord_obj.nb, coord_obj.ob];
-            callback(coordinates);
-          });
-        }
-    };
-
-    myMap.init();
+ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playdateApi, $q) {
 
     //********************************************************
-    //**************** Playdate stuff ************************
+    //**************** Playdates *****************************
     //********************************************************
 
+    $scope.markers = [];
     $scope.playdates = [];
     $scope.newPlaydate = {
       time: null,
-      location: null
+      location: null,
+      coordinates: null
     };
     $scope.masterPlaydate = angular.copy( $scope.newPlaydate );
 
-    // Get all from playdate factory
-      $scope.updatePlaydates = function () {
-        playdateApi.getAll().then(function (response) {
-          $scope.playdates = response.data.playdates;
+    $scope.createPlaydate = function () {
+
+      var deferred = $q.defer();
+
+      $scope.getCoordinates( $scope.newPlaydate.location, function( coords ) {
+        deferred.resolve( coords );
+      });
+
+      deferred.promise.then(function( coordinates ) {
+        $scope.newPlaydate.coordinates = coordinates || [];
+        playdateApi.createPlaydate( $scope.newPlaydate ).then(function () {
+          $scope.updatePlaydates();
+        $scope.newPlaydate = angular.copy( $scope.masterPlaydate );
+        });
+      });
+    };
+    // Get all from playdate factory and render markers
+    $scope.updatePlaydates = function () {
+      playdateApi.getAll().then(function (response) {
+        $scope.playdates = response.data.playdates;
+          var marker, i;
+          var icon = {
+              url: '/images/french.png',
+              scaledSize: new google.maps.Size(40, 40)
+          };
+          for (i = 0; i < $scope.playdates.length; i++) {
+
+            var lng = $scope.playdates[i].coordinates[0];
+            var lat = $scope.playdates[i].coordinates[1];
+            $scope.markersLatLng = new google.maps.LatLng(lat, lng);
+            // MAP MARKERS
+            marker = new google.maps.Marker({
+                     position: $scope.markersLatLng,
+                     map: $scope.map,
+                     icon: icon,
+                     draggable: false,
+                     animation: google.maps.Animation.BOUNCE
+            });
+          }
         });
       };
 
-      $scope.createPlaydate = function () {
-        playdateApi.createPlaydate( $scope.newPlaydate ).then(function () {
-          console.log($scope.newPlaydate.location);
-          // getCoordinates($scope.newPlaydate.location);
-          $scope.updatePlaydates();
-          $scope.newPlaydate = angular.copy( $scope.masterPlaydate );
-        });
+  //***********************************
+  //******** GEOCODER & MAP ***********
+  //***********************************
+
+    $scope.getCoordinates = function( address, callback ) {
+      var geocoder = new google.maps.Geocoder();
+      var coordinates;
+
+      geocoder.geocode( {address: address}, function ( results, status) {
+        console.log(results);
+        coords_obj = results[0].geometry.location;
+        coordinates = [coords_obj.lng(), coords_obj.lat()];
+        callback(coordinates);
+      });
+    };
+
+    var myMap ={};
+      myMap.init = function () {
+        // MAP SETTINGS
+          this.zoom = 14;
+          this.mapEl = document.querySelector('#map');
+          $scope.currentLatLng = new google.maps.LatLng( 40.7398848,-73.9922705 );
+          console.log("map init latlng "+$scope.currentLatLng);
+          $scope.map = new google.maps.Map( this.mapEl, {
+            center: $scope.currentLatLng,
+            zoom: this.zoom,
+            styles: mapStyle
+          });
       };
+
+      $scope.recenterMap = function (coords) {
+        console.log(coords);
+        $scope.map.setZoom(myMap.zoom);
+        $scope.currentLatLng = new google.maps.LatLng(coords[1], coords[0]);
+        $scope.map.panTo( $scope.currentLatLng );
+      };
+
+      // $scope.clearMarkers = function () {
+      //   $scope.marker.setMap(null);
+      // }
 
   (function () {
+    myMap.init();
     $scope.updatePlaydates();
   })();
-}]);
-
-
-ctrl.factory('playdateApi', ['$http', function ($http) {
-
-  var baseUrl = '/api/playdates';
-  var playdatesInterface = {};
-
-    playdatesInterface.getAll = function () {
-      return $http.get( baseUrl );
-    };
-
-    playdatesInterface.createPlaydate = function ( newPlaydate ) {
-      var payload = { playdate: newPlaydate };
-      return $http.post( baseUrl, payload );
-    };
-
-  return playdatesInterface;
 }]);
