@@ -2,11 +2,52 @@ var ctrl = angular.module('MainController', []);
 
 ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playdateApi, $q) {
 
+    //***********************************
+    //******** MAP & GEOCODER ***********
+    //***********************************
+
+      var myMap ={};
+      $scope.markers = [];
+        myMap.init = function () {
+          // MAP SETTINGS
+            this.zoom = 14;
+            this.mapEl = document.querySelector('#map');
+            $scope.currentLatLng = new google.maps.LatLng( 40.7398848,-73.9922705 );
+            console.log("map init latlng "+$scope.currentLatLng);
+            $scope.map = new google.maps.Map( this.mapEl, {
+              center: $scope.currentLatLng,
+              zoom: this.zoom,
+              styles: mapStyle
+            });
+        };
+
+        $scope.recenterMap = function (coords) {
+          console.log(coords);
+          $scope.map.setZoom(myMap.zoom);
+          $scope.currentLatLng = new google.maps.LatLng(coords[1], coords[0]);
+          $scope.map.panTo( $scope.currentLatLng );
+        };
+
+        // $scope.clearMarkers = function () {
+        //   $scope.markers.clear();
+        // };
+
+        $scope.getCoordinates = function( address, callback ) {
+          var geocoder = new google.maps.Geocoder();
+          var coordinates;
+
+          geocoder.geocode( {address: address}, function ( results, status) {
+            console.log(results);
+            coords_obj = results[0].geometry.location;
+            coordinates = [coords_obj.lng(), coords_obj.lat()];
+            callback(coordinates);
+          });
+        };
+
     //********************************************************
     //**************** Playdates *****************************
     //********************************************************
 
-    $scope.markers = [];
     $scope.playdates = [];
     $scope.newPlaydate = {
       time: null,
@@ -16,18 +57,18 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
     $scope.masterPlaydate = angular.copy( $scope.newPlaydate );
 
     $scope.createPlaydate = function () {
-
       var deferred = $q.defer();
 
       $scope.getCoordinates( $scope.newPlaydate.location, function( coords ) {
         deferred.resolve( coords );
       });
 
-      deferred.promise.then(function( coordinates ) {
+        deferred.promise.then(function( coordinates ) {
         $scope.newPlaydate.coordinates = coordinates || [];
         playdateApi.createPlaydate( $scope.newPlaydate ).then(function () {
+          // $scope.clearMarkers();
           $scope.updatePlaydates();
-        $scope.newPlaydate = angular.copy( $scope.masterPlaydate );
+          $scope.newPlaydate = angular.copy( $scope.masterPlaydate );
         });
       });
     };
@@ -56,47 +97,6 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
           }
         });
       };
-
-  //***********************************
-  //******** GEOCODER & MAP ***********
-  //***********************************
-
-    $scope.getCoordinates = function( address, callback ) {
-      var geocoder = new google.maps.Geocoder();
-      var coordinates;
-
-      geocoder.geocode( {address: address}, function ( results, status) {
-        console.log(results);
-        coords_obj = results[0].geometry.location;
-        coordinates = [coords_obj.lng(), coords_obj.lat()];
-        callback(coordinates);
-      });
-    };
-
-    var myMap ={};
-      myMap.init = function () {
-        // MAP SETTINGS
-          this.zoom = 14;
-          this.mapEl = document.querySelector('#map');
-          $scope.currentLatLng = new google.maps.LatLng( 40.7398848,-73.9922705 );
-          console.log("map init latlng "+$scope.currentLatLng);
-          $scope.map = new google.maps.Map( this.mapEl, {
-            center: $scope.currentLatLng,
-            zoom: this.zoom,
-            styles: mapStyle
-          });
-      };
-
-      $scope.recenterMap = function (coords) {
-        console.log(coords);
-        $scope.map.setZoom(myMap.zoom);
-        $scope.currentLatLng = new google.maps.LatLng(coords[1], coords[0]);
-        $scope.map.panTo( $scope.currentLatLng );
-      };
-
-      // $scope.clearMarkers = function () {
-      //   $scope.marker.setMap(null);
-      // }
 
   (function () {
     myMap.init();
