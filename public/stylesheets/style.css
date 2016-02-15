@@ -88,6 +88,17 @@ header {
   left: 27%;
 }
 
+#thought-picture {
+  position: relative;
+  width: 60px;
+  z-index: 11;
+  top: -2.5em;
+  left: 30%;
+  -webkit-animation-duration: 1s;
+  -o-animation-duration: 1s;
+  animation-duration: 1s;
+}
+
 #bully {
   position: relative;
   padding: 0;

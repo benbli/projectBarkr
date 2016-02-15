@@ -13,7 +13,6 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
             this.zoom = 14;
             this.mapEl = document.querySelector('#map');
             $scope.currentLatLng = new google.maps.LatLng( 40.7398848,-73.9922705 );
-            console.log("map init latlng "+$scope.currentLatLng);
             $scope.map = new google.maps.Map( this.mapEl, {
               center: $scope.currentLatLng,
               zoom: this.zoom,
@@ -66,7 +65,7 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
         deferred.promise.then(function( coordinates ) {
         $scope.newPlaydate.coordinates = coordinates || [];
         playdateApi.createPlaydate( $scope.newPlaydate ).then(function () {
-          // $scope.clearMarkers();
+          $scope.markers.setMap(null);
           $scope.updatePlaydates();
           $scope.newPlaydate = angular.copy( $scope.masterPlaydate );
         });
@@ -101,5 +100,28 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
   (function () {
     myMap.init();
     $scope.updatePlaydates();
+
+    //animate.css
+    $.fn.extend({
+    animateCss: function (animationName) {
+        var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+        $(this).addClass('animated ' + animationName).one(animationEnd, function() {
+            $(this).removeClass('animated ' + animationName);
+            $(this).addClass('animated zoomOutRight').one(animationEnd, function () {
+              $(this).removeClass('animated zoomOutRight');
+            });
+        });
+      }
+    });
+
+    $('.button-primary').click(function (e) {
+      e.preventDefault();
+      var thoughtPicture = $('#thought-picture');
+      thoughtPicture.show();
+      thoughtPicture.animateCss('wobble').one(function () {
+        thoughtPicture.hide();
+      });
+    });
+
   })();
 }]);
