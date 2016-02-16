@@ -21,15 +21,17 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
         };
 
         $scope.recenterMap = function (coords) {
-          console.log(coords);
-          $scope.map.setZoom(myMap.zoom);
+          // console.log(coords);
+          $scope.map.setZoom(16);
           $scope.currentLatLng = new google.maps.LatLng(coords[1], coords[0]);
           $scope.map.panTo( $scope.currentLatLng );
         };
 
-        // $scope.clearMarkers = function () {
-        //   $scope.markers.clear();
-        // };
+        $scope.clearMarkers = function () {
+          for (var i = 0; i < $scope.markers.length; i++) {
+            $scope.markers[i].setMap(null);
+          }
+        };
 
         $scope.getCoordinates = function( address, callback ) {
           var geocoder = new google.maps.Geocoder();
@@ -65,7 +67,7 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
         deferred.promise.then(function( coordinates ) {
         $scope.newPlaydate.coordinates = coordinates || [];
         playdateApi.createPlaydate( $scope.newPlaydate ).then(function () {
-          $scope.markers.setMap(null);
+          $scope.clearMarkers();
           $scope.updatePlaydates();
           $scope.newPlaydate = angular.copy( $scope.masterPlaydate );
         });
@@ -93,6 +95,8 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
                      draggable: false,
                      animation: google.maps.Animation.BOUNCE
             });
+            $scope.markers.push(marker);
+            console.log($scope.markers);
           }
         });
       };
@@ -114,13 +118,11 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
       }
     });
 
-    $('.button-primary').click(function (e) {
-      e.preventDefault();
+    $('.button-primary').click(function () {
+      // e.preventDefault();
       var thoughtPicture = $('#thought-picture');
       thoughtPicture.show();
-      thoughtPicture.animateCss('wobble').one(function () {
-        thoughtPicture.hide();
-      });
+      thoughtPicture.animateCss('wobble');
     });
 
   })();
