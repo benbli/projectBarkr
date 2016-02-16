@@ -28,7 +28,7 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
 
         $scope.recenterMap = function (coords) {
           // console.log(coords);
-          $scope.map.setZoom(16);
+          $scope.map.setZoom(15);
           $scope.currentLatLng = new google.maps.LatLng(coords[1], coords[0]);
           $scope.map.panTo( $scope.currentLatLng );
         };
@@ -74,6 +74,7 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
         $scope.newPlaydate.coordinates = coordinates || [];
         playdateApi.createPlaydate( $scope.newPlaydate ).then(function () {
           $scope.clearMarkers();
+          $scope.recenterMap( coordinates );
           $scope.updatePlaydates();
           $scope.newPlaydate = angular.copy( $scope.masterPlaydate );
         });
