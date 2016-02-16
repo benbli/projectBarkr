@@ -34,8 +34,8 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
         };
 
         $scope.clearMarkers = function () {
-          for (var i = 0; i < $scope.markers.length; i++) {
-            $scope.markers[i].setMap(null);
+          for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
           }
         };
 
@@ -87,7 +87,6 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
           for (var i = 0; i < $scope.playdates.length; i++) {
 
             var contentInfo = '<span>' + $scope.playdates[i].location + '</span></br><img class="puppy-picture" src="http://www.thepuppyapi.com/puppy?format=src">';
-            // var contentInfo = '<span>' + $scope.playdates[i].location + '</span></br><img class="puppy-picture" src="http://www.thepuppyapi.com/puppy?breed=corgi">';
 
             infowindows[i] = new google.maps.InfoWindow({
               content: contentInfo
