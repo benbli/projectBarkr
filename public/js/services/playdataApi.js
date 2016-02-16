@@ -13,6 +13,6 @@ api.factory('playdateApi', ['$http', function ($http) {
       var payload = { playdate: newPlaydate };
       return $http.post( baseUrl, payload );
     };
-    
+
   return playdatesInterface;
 }]);

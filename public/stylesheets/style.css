@@ -140,3 +140,11 @@ header {
   overflow: scroll;
   height: 360px;
 }
+
+.puppy-picture {
+  height: 120px;
+  width: 120px;
+  position: relative;
+  margin-top: 10px;
+  margin-left: 20%;
+}

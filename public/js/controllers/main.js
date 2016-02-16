@@ -7,7 +7,13 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
     //***********************************
 
       var myMap ={};
-      $scope.markers = [];
+      var markers = [];
+      var infowindows = [];
+      var icon = {
+          url: '/images/french.png',
+          scaledSize: new google.maps.Size(40, 40)
+      };
+
         myMap.init = function () {
           // MAP SETTINGS
             this.zoom = 14;
@@ -77,27 +83,35 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
     $scope.updatePlaydates = function () {
       playdateApi.getAll().then(function (response) {
         $scope.playdates = response.data.playdates;
-          var marker, i;
-          var icon = {
-              url: '/images/french.png',
-              scaledSize: new google.maps.Size(40, 40)
-          };
-          for (i = 0; i < $scope.playdates.length; i++) {
+
+          for (var i = 0; i < $scope.playdates.length; i++) {
+
+            var contentInfo = '<span>' + $scope.playdates[i].location + '</span></br><img class="puppy-picture" src="http://www.thepuppyapi.com/puppy?format=src">';
+            // var contentInfo = '<span>' + $scope.playdates[i].location + '</span></br><img class="puppy-picture" src="http://www.thepuppyapi.com/puppy?breed=corgi">';
+
+            infowindows[i] = new google.maps.InfoWindow({
+              content: contentInfo
+            });
 
             var lng = $scope.playdates[i].coordinates[0];
             var lat = $scope.playdates[i].coordinates[1];
             $scope.markersLatLng = new google.maps.LatLng(lat, lng);
             // MAP MARKERS
-            marker = new google.maps.Marker({
+            markers[i] = new google.maps.Marker({
                      position: $scope.markersLatLng,
                      map: $scope.map,
                      icon: icon,
                      draggable: false,
+                     clickable: true,
                      animation: google.maps.Animation.BOUNCE
             });
-            $scope.markers.push(marker);
-            console.log($scope.markers);
+            google.maps.event.addListener(markers[i], 'click', (function (marker, i) {
+              return function () {
+                infowindows[i].open($scope.map, markers[i]);
+              };
+            })(markers[i], i));
           }
+          console.log(markers);
         });
       };
 

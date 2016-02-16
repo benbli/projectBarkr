@@ -35,13 +35,13 @@ block content
             thead
               tr
                 th 
-                  i(class="fa fa-map-marker")
                   span  Location 
                 th  
                   i(class="fa fa-clock-o") 
             tbody(ng-repeat="playdate in playdates | orderBy: '-createdAt'" ng-click="recenterMap(playdate.coordinates)")
               tr
-                td 
-                  a {{ playdate.location }}
+                td
+                  i(class="fa fa-map-marker")  
+                  a  {{ playdate.location }}
                 td 
                   a {{ playdate.time }} 
