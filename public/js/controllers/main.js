@@ -9,6 +9,7 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
       var myMap ={};
       var markers = [];
       var infowindows = [];
+      var prevInfoWindow = false;
       var icon = {
           url: '/images/french.png',
           scaledSize: new google.maps.Size(40, 40)
@@ -107,7 +108,11 @@ ctrl.controller('main', ['$scope', 'playdateApi', '$q', function ($scope, playda
             });
             google.maps.event.addListener(markers[i], 'click', (function (marker, i) {
               return function () {
+                if (prevInfoWindow) {
+                  prevInfoWindow.close();
+                }
                 infowindows[i].open($scope.map, markers[i]);
+                prevInfoWindow = infowindows[i];
               };
             })(markers[i], i));
           }
