@@ -80,6 +80,7 @@ header {
 .form-wrapper {
   border-bottom: 1px dotted #ccc;
   padding-top: 10px;
+  margin-bottom: 8px;
   width: 440px;
   line-height: .5;
 }
@@ -146,6 +147,7 @@ label {
 .playdate-titles {
   color: rgb(54,195,237);
   font: 20px proxima_novasemibold;
+  letter-spacing: 1px;
   padding: 4px;
   margin-bottom: 6px;
   margin-left: -.2em;
@@ -160,7 +162,7 @@ label {
 }
 
 .location-th {
-  margin-left: 2em;  
+  margin-left: 2em;
 }
 
 td a {
