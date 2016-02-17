@@ -10,7 +10,7 @@ html body {
 }
 
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px proxima_novasemibold, "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -109,12 +109,15 @@ header {
   padding: 0;
   height: 140px;
   z-index: -5;
-  top: 2.1em;
+  top: 2.7em;
   left: 21.5em;
 }
 
 #setup-date-form {
+  width: 320px;
+  margin-left: 2em;
   margin-top: -9em;
+  margin-bottom: 1em;
 }
 
 #form-time {
@@ -125,9 +128,13 @@ header {
   width: 190px;
 }
 
+label {
+  margin-bottom: 1em;
+}
+
 .button-primary {
   display: block;
-  margin-left: 40px;
+  margin-left: 28px;
 }
 
 .playdates-wrapper {
@@ -136,13 +143,29 @@ header {
   margin: 0;
 }
 
-/*.playdate-titles {
-  font-family: 'Helvetica Neue';
-  font-weight: 300;
-}*/
+.playdate-titles {
+  color: rgb(54,195,237);
+  font: 20px proxima_novasemibold;
+  padding: 4px;
+  margin-bottom: 6px;
+  margin-left: -.2em;
+}
 
 .playdate-header {
   margin-bottom: -10px;
+}
+
+#clock-icon {
+  margin-left: 1em;
+}
+
+.location-th {
+  margin-left: 2em;  
+}
+
+td a {
+  margin-left: 1em;
+  font: 15px proxima_novalight;
 }
 
 .playdates-list {

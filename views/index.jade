@@ -16,7 +16,7 @@ block content
     section(id="left-section")
       div(class="form-wrapper")
         br
-        h5.playdate-titles Set up a playdate
+        h5.playdate-titles SET UP A PLAYDATE
         img(src="/images/bulldog.png" id="bully")
 
         form(ng-submit="createPlaydate()" id="setup-date-form")
@@ -30,15 +30,15 @@ block content
       div(class="playdates-wrapper")
         div(class="playdates-list")
           div(class="playdate-header")
-            h5.playdate-titles Current playdates     
+            h5.playdate-titles CURRENT PLAYDATES     
           
           table(class="u-full-width")
             thead
               tr
                 th 
-                  span  Location 
+                  span.location-th  Location 
                 th  
-                  i(class="fa fa-clock-o") 
+                  i(class="fa fa-clock-o" id="clock-icon") 
             tbody(ng-repeat="playdate in playdates | orderBy: '-createdAt'" ng-click="recenterMap(playdate.coordinates)")
               tr
                 td
