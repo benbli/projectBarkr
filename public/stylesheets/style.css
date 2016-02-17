@@ -23,15 +23,23 @@ a:hover {
   cursor: pointer;
 }
 
+/*
+*** header ***
+*/
 header {
   width: 100%;
   height: 100px;
   border-bottom: 1px dotted #ccc;
 }
 
-.about-link {
-  font-size: 25px;
-  margin-left: 70%;
+#about-link {
+  font-size: 2em;
+  margin-left: 73%;
+}
+
+#github-icon {
+  font-size: 2em;
+  margin-left: .5em;
 }
 
 .title-logo {
