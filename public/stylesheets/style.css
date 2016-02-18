@@ -43,8 +43,9 @@ header {
 }
 
 .title-logo {
+  /*font-family: 'muchachohorseshoe';*/
   display: inline-block;
-  margin-left: 15px;
+  margin-left: -3px;
   width: 200px;
   font-size: 70px;
   font-weight: bolder;
@@ -116,7 +117,7 @@ header {
 
 #setup-date-form {
   width: 320px;
-  margin-left: 2em;
+  /*margin-left: 2em;*/
   margin-top: -9em;
   margin-bottom: 1em;
 }
@@ -162,7 +163,7 @@ label {
 }
 
 .location-th {
-  margin-left: 2em;
+  /*margin-left: 2em;*/
 }
 
 td a {
