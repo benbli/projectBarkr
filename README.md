@@ -1,4 +1,4 @@
-![Alt text]()
+![splash screen](public/images/Screen Shot 2016-02-25 at 16.55.01.png)
 
 ### Barkr
 
