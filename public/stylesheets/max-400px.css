@@ -8,6 +8,10 @@ header {
   height: 580px;
 }
 
+#map {
+  height: 375px;
+}
+
 #about-link {
   float: right;
   margin-left: 2rem;
