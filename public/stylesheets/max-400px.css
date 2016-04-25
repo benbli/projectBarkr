@@ -43,3 +43,7 @@ header {
 .playdates-list {
   height: 300px;
 }
+
+.form-wrapper {
+  width: 400px;
+}

@@ -76,6 +76,7 @@ header {
   border-right: 1px dotted #ccc;
   height: 615px;
   width: 440px;
+  float: left;
 }
 
 .form-wrapper {
