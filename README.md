@@ -27,7 +27,7 @@ Can't get enough puppies in your life? How about an app that'll help you find th
 
 ### URL
 
-[Barkr](https://boiling-hamlet-49732.herokuapp.com/)
+[Barkr](https://barkrapp.herokuapp.com/)
 
 ---
 
