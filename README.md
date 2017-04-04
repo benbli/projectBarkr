@@ -1,4 +1,4 @@
-![splash screen](public/images/Screen Shot 2016-02-25 at 16.55.01.png)
+![splash screen](public/images/Screen%20Shot%202016-02-25%20at%2016.55.01.png)
 
 ### Barkr
 
@@ -14,11 +14,11 @@ Can't get enough puppies in your life? How about an app that'll help you find th
 
 ### User Cases
 
-![User stories](public/images/Screen Shot 2016-02-25 at 16.58.49.png)
+![User stories](public/images/Screen%20Shot%202016-02-25%20at%2016.58.49.png)
 
 * When a user inputs a time and location for a playdate, it recenters the location on the map and places a custom marker.
 
-![User stories](public/images/Screen Shot 2016-02-25 at 16.56.05.png)
+![User stories](public/images/Screen%20Shot%202016-02-25%20at%2016.56.05.png)
 
 * A user may also click on a marker, which prompts an infowindow with an image of a puppy.
 
